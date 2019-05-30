@@ -14,9 +14,9 @@ ROUTE_BEGIN_POSITION = (0, 0)
 # Minimum size for contour detection
 MIN_CONTOUR_LENGTH = 20
 # Threshold for route lines (color in lines should be lower than these thresholds)
-ROAD_SAT_RANGE = [0, 60]
-ROAD_VALUE_RANGE = [0, 60]
-# The amount of morphology effect to routes
+ROUTE_SAT_RANGE = [0, 50]
+ROUTE_VALUE_RANGE = [0, 120]
+# The kernel size of morphology effect to routes
 CLOSE_KERNEL_SIZE = 25
 EROSION_KERNEL_SIZE = 15
 # Channel threshold for marks
@@ -38,13 +38,15 @@ SHOW_ORIGINAL = False
 SHOW_CORNER_MARK = False
 SHOW_CORNER_CENTERS = False
 SHOW_TRANSFORMED = False
-SHOW_ROUTE_MORPH = True
 SHOW_DETECTED_LINES = False
 SHOW_MERGED_LINES = False
 SHOW_KEYPOINTS = True
 SHOW_HEAD_MARK = False
 SHOW_TAIL_MARK = False
 SHOW_CAR_POS = True
+
+ASCII_ENTER = 13
+ASCII_ESCAPE = 27
 
 class RouteMap:
     def __init__(self):
@@ -58,7 +60,7 @@ class RouteMap:
             while True:
                 _, frame = self.video.read()
                 cv2.imshow("Adjustment", frame)
-                if cv2.waitKey(25) == 13:
+                if cv2.waitKey(25) == ASCII_ENTER:
                     cv2.destroyAllWindows()
                     break
 
@@ -119,20 +121,51 @@ class RouteMap:
         return True
 
     def findRoute(self):
+        # Create track bar for adjusting parameters of morphology transformation
+        cv2.namedWindow("Route Morphology")
+        cv2.namedWindow("Key Positions")
+        keyPts = self._findRoute()
+
+        def onChangeSat(x):
+            ROUTE_SAT_RANGE[1] = x
+            keyPts = self._findRoute()
+        cv2.createTrackbar("Saturation", "Route Morphology", ROUTE_SAT_RANGE[1], 255, onChangeSat)
+        def onChangeValue(x):
+            ROUTE_VALUE_RANGE[1] = x
+            keyPts = self._findRoute()
+        cv2.createTrackbar("Value", "Route Morphology", ROUTE_VALUE_RANGE[1], 255, onChangeValue)
+        def onChangeClose(x):
+            global CLOSE_KERNEL_SIZE
+            CLOSE_KERNEL_SIZE = x
+            keyPts = self._findRoute()
+        cv2.createTrackbar("Close", "Route Morphology", CLOSE_KERNEL_SIZE, 50, onChangeClose)
+        def onChangeErosion(x):
+            global EROSION_KERNEL_SIZE
+            EROSION_KERNEL_SIZE = x
+            keyPts = self._findRoute()
+        cv2.createTrackbar("Erosion", "Route Morphology", EROSION_KERNEL_SIZE, 50, onChangeErosion)
+
+        while True:
+            if cv2.waitKey(25) == ASCII_ENTER:
+                break
+        cv2.destroyAllWindows()
+
+        return keyPts
+
+    def _findRoute(self):
         # Create road mask
         blurred = cv2.GaussianBlur(self.map, (3, 3), 0)
-        roads = createMask(blurred, (0, 255), ROAD_SAT_RANGE, ROAD_VALUE_RANGE)
-        roads = cv2.morphologyEx(roads, cv2.MORPH_CLOSE, np.ones((CLOSE_KERNEL_SIZE, CLOSE_KERNEL_SIZE), np.uint8))
+        roads = createMask(blurred, (0, 255), ROUTE_SAT_RANGE, ROUTE_VALUE_RANGE)
+        roads = cv2.morphologyEx(roads, cv2.MORPH_CLOSE, np.ones((CLOSE_KERNEL_SIZE, CLOSE_KERNEL_SIZE)))
         # Erode image (make roads appear narrower)
-        roads = cv2.erode(roads, np.ones((EROSION_KERNEL_SIZE
-        , EROSION_KERNEL_SIZE
-    ), np.uint8), 
+        roads = cv2.erode(roads, np.ones((EROSION_KERNEL_SIZE, EROSION_KERNEL_SIZE)), 
             iterations=1)
-        if SHOW_ROUTE_MORPH:
-            cv2.imshow("Route Morphology", roads)
+        cv2.imshow("Route Morphology", roads)
 
         # Hough line transform
         endpts = cv2.HoughLinesP(roads, 1, np.pi/180, 30, minLineLength=100, maxLineGap=10)
+        if endpts is None:
+            return None
         # Convert to lines representation
         lines = list(map(lambda l: Line(tuple(l[0])), endpts))
 
