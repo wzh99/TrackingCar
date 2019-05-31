@@ -1,6 +1,7 @@
 import serial
 import time
 import numpy as np
+import cv2
 from serial.tools import list_ports
 from routemap import RouteMap
 
@@ -20,7 +21,7 @@ class Controller:
 
 	def run(self):
 		# Intialize route map data
-		self.map.capture(True)
+		self.map.capture(True):
 		route = list(self.map.findRoute())
 		print("Route points:", route)
 		targPos = route.pop(0)

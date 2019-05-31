@@ -31,12 +31,10 @@ SEARCH_RANGE = 300
 # The minimum distance of a newly added route point to existing points
 CLOSEST_MIN_DIST = 50
 
-# Whether need to monitor car and map adjustment
-MONITOR_ADJUSTMENT = False
+# Use test image or video capture
+TEST_WITH_IMAGE = True
 # Decide whether to show certain images
-SHOW_ORIGINAL = False
-SHOW_CORNER_MARK = False
-SHOW_CORNER_CENTERS = False
+SHOW_CORNER_MASK = False
 SHOW_TRANSFORMED = False
 SHOW_DETECTED_LINES = False
 SHOW_MERGED_LINES = False
@@ -50,75 +48,77 @@ ASCII_ESCAPE = 27
 
 class RouteMap:
     def __init__(self):
-        # self.video = cv2.VideoCapture(CAMERA_ID)
-        self.pixelBnd = np.float32([[0, 0], [MAP_SIZE[0], 0], 
-            [0, MAP_SIZE[1]], [MAP_SIZE[0], MAP_SIZE[1]]])
+        if not TEST_WITH_IMAGE:
+            self.video = cv2.VideoCapture(CAMERA_ID)
+        self.pixelBnd = np.float32([[0, 0], [MAP_SIZE[0], 0], [0, MAP_SIZE[1]], [MAP_SIZE[0], MAP_SIZE[1]]])
+        self.firstRun = True
 
-        # Monitor adjustment of camera and board position
-        if MONITOR_ADJUSTMENT:
-            print("Please ajust the place of camera and board")
+    def capture(self, updateMat):
+        # Monitor tweak of camera and board position
+        if self.firstRun:
+            self.firstRun = False
+            print("Please tweak the placement of camera and board")
             while True:
-                _, frame = self.video.read()
-                cv2.imshow("Adjustment", frame)
-                if cv2.waitKey(25) == ASCII_ENTER:
+                self._read()
+                self._findCorners()
+                if cv2.waitKey(100) == ASCII_ENTER:
                     cv2.destroyAllWindows()
                     break
 
-    def capture(self, updateMat):
-        #_, self.original = self.video.read()
-        self.original = cv2.imread("img/rotate.jpg")
-        if SHOW_ORIGINAL:
-            cv2.imshow("Original Image", self.original)
-
+        # Read image and update matrix if required
+        self._read()
         if updateMat:
-            ## Create corner contour mask
-            blurred = cv2.GaussianBlur(self.original, (5, 5), 0)
-            cornMark = createMask(blurred, BLUE_HUE_RANGE, MARK_SAT_RANGE, MARK_VALUE_RANGE)
-            if SHOW_CORNER_MARK:
-                cv2.imshow("Corner Mark", cornMark)
+            ok = False
+            while not ok:
+                fourCorners, ok = self._findCorners()
+            self.matrix = cv2.getPerspectiveTransform(fourCorners, self.pixelBnd)
 
-            # Find contours of corner objects
-            contours, _ = cv2.findContours(cornMark, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            # large contours are more possible candidates
-            contours.sort(key=cv2.contourArea, reverse=True) 
-
-            # Extract center point of ellipses
-            centers = []
-            for cnt in contours:
-                if len(cnt) < MIN_CONTOUR_LENGTH:
-                    continue
-                centers.append(findContourCenter(cnt))
-
-            # Visualize corners of the road map
-            if SHOW_CORNER_CENTERS:
-                print("Centers detected:", np.array(centers))
-                plot = cp.copy(self.original)
-                for pos in centers:
-                    plot = cv2.circle(plot, pos, 5, (0, 0, 255), thickness=-1)
-                cv2.imshow("Centers", plot)
-
-            # Raise error if corners are too few
-            if len(centers) < 4:
-                print("Can't detect corners of route map.")
-                return False # try again next time
-
-            # Get perspective matrix
-            centerPts = sorted(centers[:4], key=lambda p: p[0]+p[1])
-            if centerPts[1][1] > centerPts[2][1]:
-                centerPts[1], centerPts[2] = centerPts[2], centerPts[1]
-            centerPts = np.float32(centerPts)
-            self.matrix = cv2.getPerspectiveTransform(centerPts, self.pixelBnd)
-        
-        if hasattr(self, "matrix"):
-            self.map = cv2.warpPerspective(self.original, self.matrix, MAP_SIZE)
-        else:
-            raise RuntimeError("Transformation matrix has not been computed.")
+        # Apply perspective transformation to original image
+        self.map = cv2.warpPerspective(self.original, self.matrix, MAP_SIZE)
 
         # Show tranformed image
         if SHOW_TRANSFORMED:
             cv2.imshow("Transformed Map", self.map)
 
         return True
+
+    def _findCorners(self):
+        ## Create corner contour mask
+        blurred = cv2.GaussianBlur(self.original, (5, 5), 0)
+        cornMask = createMask(blurred, BLUE_HUE_RANGE, MARK_SAT_RANGE, MARK_VALUE_RANGE)
+        if SHOW_CORNER_MASK:
+            cv2.imshow("Corner Mask", cornMask)
+
+        # Find contours of corner objects
+        contours, _ = cv2.findContours(cornMask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        # Filter out contours with too short perimeter
+        contours = filter(lambda cnt: len(cnt) >= MIN_CONTOUR_LENGTH, contours)
+
+        # Extract center point of corner mark
+        corners = [findContourCenter(cnt) for cnt in contours]
+
+        # Visualize corners of the road map
+        self.cornerPlot = cp.copy(self.original)
+        for pos in corners:
+            cv2.circle(self.cornerPlot, pos, 5, (0, 0, 255), thickness=-1)
+        cv2.imshow("Corners", self.cornerPlot)
+
+        # Raise error if corners are too few
+        if len(corners) < 4:
+            print("Can't detect corners of route map.")
+            return None, False # try again next time
+
+        # Get perspective matrix
+        fourCorners = sorted(corners[:4], key=lambda p: p[0]+p[1])
+        if fourCorners[1][1] > fourCorners[2][1]:
+            fourCorners[1], fourCorners[2] = fourCorners[2], fourCorners[1]
+        return np.float32(fourCorners), True
+
+    def _read(self):
+        if TEST_WITH_IMAGE:
+            self.original = cv2.imread("img/rotate.jpg")
+        else:
+            _, self.original = self.video.read()
 
     def findRoute(self):
         # Create track bar for adjusting parameters of morphology transformation
@@ -185,15 +185,15 @@ class RouteMap:
             if len(merged) == 0: # no lines in merged
                 merged.append(lineA)
                 continue
-            flag = False
+            canMerge = False
             for lineB in merged:
                 newLine, ok = lineA.merge(lineB) 
                 if not ok: # can't merge, skip
                     continue
-                flag = True
+                canMerge = True
                 merged.remove(lineB)
                 merged.append(newLine)
-            if not flag: # can't merge lineA with any line in merged, append it
+            if not canMerge: # can't merge lineA with any line in merged, append it
                 merged.append(lineA)
         
         # Visualize merged lines
@@ -249,19 +249,19 @@ class RouteMap:
 
         # Detect red region
         redMark = createMask(blurred, RED_HUE_RANGE, MARK_SAT_RANGE, MARK_VALUE_RANGE)
-        if SHOW_HEAD_MARK:
-            cv2.imshow("Head mark", redMark)
         # Find head position
         headPos = findMaskCenter(redMark)
-        print("Head position:", headPos)
+        if SHOW_HEAD_MARK:
+            cv2.imshow("Head Mark", redMark)
+            print("Head position:", headPos)
 
         # Detect green region
         greenMark = createMask(blurred, GREEN_HUE_RANGE, MARK_SAT_RANGE, MARK_VALUE_RANGE)
-        if SHOW_TAIL_MARK:
-            cv2.imshow("Tail mark", greenMark)
         # Find tail position
         tailPos = findMaskCenter(greenMark)
-        print("Tail Position", tailPos)
+        if SHOW_TAIL_MARK:
+            cv2.imshow("Tail Mark", greenMark)
+            print("Tail Position", tailPos)
 
         if SHOW_CAR_POS:
             plot = cp.copy(self.routePlot)
@@ -302,8 +302,7 @@ def createMask(img, hueRng, satRng, valRng):
 
 if __name__ == '__main__':
     route = RouteMap()
-    while not route.capture(True):
-        pass
+    route.capture(True)
     print(route.findRoute())
     while True:
         route.capture(True)
