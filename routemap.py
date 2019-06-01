@@ -24,8 +24,8 @@ RED_HUE_RANGE = [0, 20]
 GREEN_HUE_RANGE = [40, 80]
 BLUE_HUE_RANGE = [90, 130]
 # Saturation threshold of car mark
-MARK_SAT_RANGE = [100, 255]
-MARK_VALUE_RANGE = [100, 255]
+MARK_SAT_RANGE = [80, 255]
+MARK_VALUE_RANGE = [70, 255]
 # Search range of new keypoints
 SEARCH_RANGE = 300
 # The minimum distance of a newly added route point to existing points
@@ -34,7 +34,6 @@ CLOSEST_MIN_DIST = 50
 # Use test image or video capture
 TEST_WITH_IMAGE = True
 # Decide whether to show certain images
-SHOW_CORNER_MASK = False
 SHOW_TRANSFORMED = False
 SHOW_DETECTED_LINES = False
 SHOW_MERGED_LINES = False
@@ -57,10 +56,24 @@ class RouteMap:
         # Monitor tweak of camera and board position
         if self.firstRun:
             self.firstRun = False
+
+            # Tweak saturation and value threshold of marks
+            cv2.namedWindow("Mark Mask")
+            def onChangeSat(x):
+                MARK_SAT_RANGE[0] = x
+            cv2.createTrackbar("Saturation", "Mark Mask", MARK_SAT_RANGE[0], 255, onChangeSat)
+            def onChangeValue(x):
+                MARK_VALUE_RANGE[0] = x
+            cv2.createTrackbar("Value", "Mark Mask", MARK_VALUE_RANGE[0], 255, onChangeValue)
+
+            # Tweak placement of camera and board
             print("Please tweak the placement of camera and board")
             while True:
+                # Read and find corners
                 self._read()
                 self._findCorners()
+                # Show corner mark for tweaking threshold
+                cv2.imshow("Mark Mask", self.markPlot)
                 if cv2.waitKey(100) == ASCII_ENTER:
                     cv2.destroyAllWindows()
                     break
@@ -85,9 +98,8 @@ class RouteMap:
     def _findCorners(self):
         ## Create corner contour mask
         blurred = cv2.GaussianBlur(self.original, (5, 5), 0)
+        self.markPlot = createMask(blurred, (0, 180), MARK_SAT_RANGE, MARK_VALUE_RANGE)
         cornMask = createMask(blurred, BLUE_HUE_RANGE, MARK_SAT_RANGE, MARK_VALUE_RANGE)
-        if SHOW_CORNER_MASK:
-            cv2.imshow("Corner Mask", cornMask)
 
         # Find contours of corner objects
         contours, _ = cv2.findContours(cornMask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -95,7 +107,10 @@ class RouteMap:
         contours = filter(lambda cnt: len(cnt) >= MIN_CONTOUR_LENGTH, contours)
 
         # Extract center point of corner mark
-        corners = [findContourCenter(cnt) for cnt in contours]
+        try:
+            corners = [findContourCenter(cnt) for cnt in contours]
+        except Exception:
+            return None, False
 
         # Visualize corners of the road map
         self.cornerPlot = cp.copy(self.original)
