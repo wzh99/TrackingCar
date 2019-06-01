@@ -15,6 +15,7 @@ MAT_UPDATE_PERIOD = 3
 SLEEP_SECONDS = 1
 
 # Command character of car control
+# Must convert unicode string to bytes before writing to serial
 AHEAD = 'A'.encode("ascii")
 PARK = 'P'.encode("ascii")
 LEFT = 'M'.encode("ascii")
@@ -84,7 +85,7 @@ def main():
 	# Create route map and controller
 	rtmap = RouteMap()
 	ctrl = Controller(rtmap, ser)
-	# 
+	# Main running function
 	ctrl.run()
 
 if __name__ == '__main__':
