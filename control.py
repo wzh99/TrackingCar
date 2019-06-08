@@ -23,7 +23,7 @@ LEFT = 'M'.encode("ascii")
 RIGHT = 'S'.encode("ascii")
 
 class Controller:
-	def __init__(self, routemap, ser):
+	def __init__(self, routemap: RouteMap, ser: serial.Serial):
 		self.map = routemap
 		self.ser = ser
 
@@ -38,23 +38,34 @@ class Controller:
 		# Running loop
 		nFrames = 1
 		while True:
+			# Capture new frame
 			self.map.capture(nFrames % MAT_UPDATE_PERIOD == 0)
 			nFrames += 1
+			# Update car position
 			carPos, carDir = self.map.updateCar()
 			print("Car position:", carPos, "direction:", carDir)
 			print("Distance to next point:", dist(carPos, targPos))
+			# Check if target position is reached
 			if isNear(carPos, targPos):
 				if len(route) == 0: # no remaining route points
 					self.ser.write(PARK) # park here
 					break
 				targPos = route.pop(0)
 				print("Target position:", targPos)
+			# Plot car position and route points
+			plot = self.map.carPlot
+			for pos in route:
+				cv2.circle(plot, pos, 5, (255, 0, 0), thickness=-1)
+			cv2.circle(plot, targPos, 5, (0, 255, 0), thickness=-1)
+			cv2.imshow("Car position", plot)
+			# Send instruction to car
 			self._move(targPos, carPos, carDir)
 			if cv2.waitKey(SLEEP_SECONDS) == 27:
 				break
-
+		
+		# Finish work
 		cv2.destroyAllWindows()
-
+		print("Finished")
 
 	def _move(self, targPos, carPos, carDir):
 		targVec = targPos - carPos
