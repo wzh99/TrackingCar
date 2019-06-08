@@ -36,12 +36,12 @@ class Line:
             self.pts = (self.pts[1], self.pts[0])
         self.len = self.pts[1].t - self.pts[0].t
 
-    def isColinear(self, other):
+    def isColinear(self, other) -> bool:
         return np.abs(self.rho - other.rho) < RHO_THRESH and (
             np.abs(self.theta - other.theta) < THETA_THRESH 
                 or np.abs(np.abs(self.theta - other.theta) - np.pi) < THETA_THRESH)
         
-    def merge(self, other):
+    def merge(self, other) -> (object, bool):
         if not self.isColinear(other):
             return None, False
         if self.pts[0].t > other.pts[1].t or self.pts[1].t < other.pts[0].t:
@@ -56,7 +56,7 @@ class Line:
             max([lineL.pts[1], lineS.pts[1]], key=lambda p: p.t))
         return merged, True
 
-    def otherEndpoint(self, pos):
+    def otherEndpoint(self, pos) -> tuple:
         if pos == self.pts[0].pos:
             return self.pts[1].pos
         elif pos == self.pts[1].pos:
@@ -64,9 +64,9 @@ class Line:
         else:
             raise ValueError("Invalid position.")
 
-def dist(pt1, pt2):
+def dist(pt1, pt2) -> float:
     return np.linalg.norm(np.array(pt1) - np.array(pt2))
 
-def isNear(pt1, pt2):
+def isNear(pt1, pt2) -> bool:
 	return dist(pt1, pt2) < DIST_THRESH
     

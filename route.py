@@ -32,7 +32,7 @@ SEARCH_RANGE = 300
 CLOSEST_MIN_DIST = 50
 
 # Use test image or video capture
-TEST_WITH_IMAGE = False
+TEST_WITH_IMAGE = True
 # Decide whether to show certain images
 SHOW_TRANSFORMED = False
 SHOW_DETECTED_LINES = False
@@ -40,7 +40,6 @@ SHOW_MERGED_LINES = False
 SHOW_KEYPOINTS = True
 SHOW_HEAD_MARK = False
 SHOW_TAIL_MARK = False
-SHOW_CAR_POS = True
 
 # ASCII code
 ASCII_ENTER = 13
@@ -53,7 +52,7 @@ class RouteMap:
         self.pixelBnd = np.float32([[0, 0], [MAP_SIZE[0], 0], [0, MAP_SIZE[1]], [MAP_SIZE[0], MAP_SIZE[1]]])
         self.firstRun = True
 
-    def capture(self, updateMat):
+    def capture(self, updateMat: bool) -> bool:
         # Monitor tweak of camera and board position
         if self.firstRun:
             self.firstRun = False
@@ -85,6 +84,7 @@ class RouteMap:
             ok = False
             while not ok:
                 fourCorners, ok = self._findCorners()
+                cv2.waitKey(100)
             self.matrix = cv2.getPerspectiveTransform(fourCorners, self.pixelBnd)
 
         # Apply perspective transformation to original image
@@ -96,7 +96,7 @@ class RouteMap:
 
         return True
 
-    def _findCorners(self):
+    def _findCorners(self) -> (np.ndarray, bool):
         ## Create corner contour mask
         blurred = cv2.GaussianBlur(self.original, (5, 5), 0)
         self.markPlot = createMask(blurred, (0, 180), MARK_SAT_RANGE, MARK_VALUE_RANGE)
@@ -136,7 +136,7 @@ class RouteMap:
         else:
             _, self.original = self.video.read()
 
-    def findRoute(self):
+    def findRoute(self) -> np.ndarray:
         # Create track bar for adjusting parameters of morphology transformation
         cv2.namedWindow("Route Morphology")
         cv2.namedWindow("Key Positions")
@@ -168,7 +168,7 @@ class RouteMap:
 
         return keyPts
 
-    def _findRoute(self):
+    def _findRoute(self) -> np.ndarray:
         # Create road mask
         blurred = cv2.GaussianBlur(self.map, (3, 3), 0)
         roads = createMask(blurred, (0, 255), ROUTE_SAT_RANGE, ROUTE_VALUE_RANGE)
@@ -255,7 +255,7 @@ class RouteMap:
 
         return np.array(keyPts)
 
-    def updateCar(self):
+    def updateCar(self) -> (np.ndarray, float):
         # Denoise with gaussian blur
         blurred = cv2.GaussianBlur(self.map, (3, 3), 0)
         # Convert to HSV space
@@ -279,11 +279,10 @@ class RouteMap:
             cv2.imshow("Tail Mark", greenMark)
             print("Tail Position", tailPos)
 
-        if SHOW_CAR_POS:
-            plot = cp.copy(self.map)
-            cv2.circle(plot, headPos, 5, (0, 0, 0), thickness=-1)
-            cv2.circle(plot, tailPos, 5, (0, 0, 0), thickness=-1)
-            cv2.imshow("Car Position", plot)
+        self.carPlot = cp.copy(self.map)
+        cv2.circle(self.carPlot, headPos, 5, (0, 0, 0), thickness=-1)
+        cv2.circle(self.carPlot, tailPos, 5, (0, 0, 0), thickness=-1)
+        # cv2.imshow("Car Position", plot)
 
         # Compute location and direction
         location = ((headPos[0] + tailPos[0])/2, (headPos[1] + tailPos[1] / 2))
@@ -292,16 +291,16 @@ class RouteMap:
         return np.array(location), theta
         
 
-def findMaskCenter(mask):
+def findMaskCenter(mask) -> tuple:
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours.sort(key=cv2.contourArea, reverse=True)
     return findContourCenter(contours[0])
 
-def findContourCenter(contour):
+def findContourCenter(contour) -> tuple:
     M = cv2.moments(contour)
     return tuple([int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"])])
 
-def createMask(img, hueRng, satRng, valRng):
+def createMask(img, hueRng, satRng, valRng) -> object:
     # Convert to HSV space
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # Split channels
