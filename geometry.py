@@ -63,3 +63,10 @@ class Line:
             return self.pts[0].pos
         else:
             raise ValueError("Invalid position.")
+
+def dist(pt1, pt2):
+    return np.linalg.norm(np.array(pt1) - np.array(pt2))
+
+def isNear(pt1, pt2):
+	return dist(pt1, pt2) < DIST_THRESH
+    

@@ -14,7 +14,7 @@ ROUTE_BEGIN_POSITION = (0, 0)
 # Minimum size for contour detection
 MIN_CONTOUR_LENGTH = 20
 # Threshold for route lines (color in lines should be lower than these thresholds)
-ROUTE_SAT_RANGE = [0, 50]
+ROUTE_SAT_RANGE = [0, 100]
 ROUTE_VALUE_RANGE = [0, 120]
 # The kernel size of morphology effect to routes
 CLOSE_KERNEL_SIZE = 25
@@ -24,7 +24,7 @@ RED_HUE_RANGE = [0, 20]
 GREEN_HUE_RANGE = [40, 80]
 BLUE_HUE_RANGE = [90, 130]
 # Saturation threshold of car mark
-MARK_SAT_RANGE = [80, 255]
+MARK_SAT_RANGE = [90, 255]
 MARK_VALUE_RANGE = [70, 255]
 # Search range of new keypoints
 SEARCH_RANGE = 300
@@ -32,7 +32,7 @@ SEARCH_RANGE = 300
 CLOSEST_MIN_DIST = 50
 
 # Use test image or video capture
-TEST_WITH_IMAGE = True
+TEST_WITH_IMAGE = False
 # Decide whether to show certain images
 SHOW_TRANSFORMED = False
 SHOW_DETECTED_LINES = False
@@ -229,18 +229,18 @@ class RouteMap:
         keyPts = [ROUTE_BEGIN_POSITION]
         while len(endpoints) > 0: # not all key points are collected
             lastPos = keyPts[-1]
-            closestPt = min(endpoints, key=lambda pt: distSq(pt[0], lastPos))
+            closestPt = min(endpoints, key=lambda pt: dist(pt[0], lastPos))
             if len(endpoints) == 2 * len(merged): # begin endpoint of the whole path
                 keyPts.append(closestPt[0])
-            if distSq(closestPt[0], lastPos) > SEARCH_RANGE**2: 
+            if dist(closestPt[0], lastPos) > SEARCH_RANGE: 
                 # closest point too far, end search
                 break
             endpoints.remove(closestPt)
             line = closestPt[1]
             otherPos = line.otherEndpoint(closestPt[0])
-            otherPosClosest = min(keyPts, key=lambda pt: distSq(pt, otherPos))
+            otherPosClosest = min(keyPts, key=lambda pt: dist(pt, otherPos))
             endpoints.remove((otherPos, line))
-            if distSq(otherPosClosest, otherPos) < CLOSEST_MIN_DIST**2: 
+            if dist(otherPosClosest, otherPos) < CLOSEST_MIN_DIST: 
                 # other endpoint too close to existing route points
                 continue
             keyPts.append(otherPos)
@@ -280,7 +280,7 @@ class RouteMap:
             print("Tail Position", tailPos)
 
         if SHOW_CAR_POS:
-            plot = cp.copy(self.routePlot)
+            plot = cp.copy(self.map)
             cv2.circle(plot, headPos, 5, (0, 0, 0), thickness=-1)
             cv2.circle(plot, tailPos, 5, (0, 0, 0), thickness=-1)
             cv2.imshow("Car Position", plot)
@@ -290,10 +290,7 @@ class RouteMap:
         direction = (headPos[0] - tailPos[0], headPos[1] - tailPos[1])
         theta = np.arctan2(direction[1], direction[0])
         return np.array(location), theta
-
-
-def distSq(pt1, pt2):
-    return (pt1[0]-pt2[0])**2 + (pt1[1] - pt2[1])**2
+        
 
 def findMaskCenter(mask):
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
