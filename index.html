@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>report</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:first-child { margin-top: -20px; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  @page { margin: 20mm 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+
+
+:root { --side-bar-bg-color: #fafafa; --control-text-color: #777; }
+html { font-size: 16px; }
+body { font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; }
+#write { max-width: 860px; margin: 0px auto; padding: 30px 30px 100px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom: 1px solid rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom: 1px solid rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 2px; padding: 0px; margin: 16px 0px; background-color: rgb(231, 231, 231); border: 0px none; overflow: hidden; box-sizing: content-box; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left: 4px solid rgb(223, 226, 229); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; word-break: initial; }
+table tr { border-top: 1px solid rgb(223, 226, 229); margin: 0px; padding: 0px; }
+table tr:nth-child(2n), thead { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border-width: 1px 1px 0px; border-top-style: solid; border-right-style: solid; border-left-style: solid; border-top-color: rgb(223, 226, 229); border-right-color: rgb(223, 226, 229); border-left-color: rgb(223, 226, 229); border-image: initial; border-bottom-style: initial; border-bottom-color: initial; text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(223, 226, 229); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-lines { padding-left: 4px; }
+.code-tooltip { box-shadow: rgba(0, 28, 36, 0.3) 0px 1px 1px 0px; border-top: 1px solid rgb(238, 242, 242); }
+.md-fences, code, tt { border: 1px solid rgb(231, 234, 237); background-color: rgb(248, 248, 248); border-radius: 3px; padding: 2px 4px 0px; font-size: 0.9em; }
+code { background-color: rgb(243, 244, 244); padding: 0px 2px; }
+.md-fences { margin-bottom: 15px; margin-top: 15px; padding-top: 8px; padding-bottom: 6px; }
+.md-task-list-item > input { margin-left: -1.3em; }
+@media print {
+  html { font-size: 13px; }
+  table, pre { break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; background-color: rgb(247, 247, 247); border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+.md-mathjax-midline { background: rgb(250, 250, 250); }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border-radius: 3px; padding: 2px 0px 0px 4px; font-size: 0.9em; color: inherit; }
+.md-tag { color: rgb(167, 167, 167); opacity: 1; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+.sidebar-tabs { border-bottom: none; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { background-color: rgb(250, 250, 250); border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; }
+.on-focus-mode blockquote { border-left-color: rgba(85, 85, 85, 0.12); }
+header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Arial, sans-serif; }
+.file-node-content:hover .file-node-icon, .file-node-content:hover .file-node-open-state { visibility: visible; }
+.mac-seamless-mode #typora-sidebar { background-color: var(--side-bar-bg-color); }
+.md-lang { color: rgb(180, 101, 77); }
+.html-for-mac .context-menu { --item-hover-bg-color: #E6F0FE; }
+#md-notification .btn { border: 0px; }
+.dropdown-menu .divider { border-color: rgb(229, 229, 229); }
+
+
+
+
+
+ .typora-export li, .typora-export p, .typora-export,  .footnote-line {white-space: normal;} 
+</style>
+</head>
+<body class='typora-export os-windows' >
+<div  id='write'  class = 'is-node'><h1><a name='header-n161' class='md-header-anchor '></a>工程实践与科技创新 II-B 04 组项目报告</h1><p>&nbsp;</p><h2><a name='header-n164' class='md-header-anchor '></a>项目信息</h2><h3><a name='header-n165' class='md-header-anchor '></a>项目名称</h3><p>计算机控制小车走黑线</p><h3><a name='header-n167' class='md-header-anchor '></a>成员及分工</h3><figure><table><thead><tr><th>姓名</th><th>分工</th></tr></thead><tbody><tr><td>王梓涵</td><td>图像处理、串口通信、计算机端控制</td></tr><tr><td>李岩松</td><td>硬件处理、小车调试</td></tr><tr><td>杜蔻年华</td><td>单片机编程、小车调试</td></tr></tbody></table></figure><p>附工作照片：</p><p><img src='image/group_photo.jpg' alt='' referrerPolicy='no-referrer' /></p><p>跑道后三人为小组成员，从左自右依次为王梓涵、李岩松、杜蔻年华。</p><p>&nbsp;</p><h2><a name='header-n185' class='md-header-anchor '></a>项目介绍</h2><h3><a name='header-n186' class='md-header-anchor '></a>整体结构</h3><p>整个项目由计算机、小车和跑道三个部分组成。小车置于跑道上。计算机与摄像头相连，摄像头采集图像监控小车位置。计算机通过图像处理和控制算法，对小车发出蓝牙无线控制指令。小车接受到指令后，对其进行解码，控制电机转速来响应计算机的控制指令。通过这样的方式使小车走完设定的黑线。</p><h3><a name='header-n188' class='md-header-anchor '></a>硬件部分</h3><p><strong>MCU MSP430</strong><span>	</span>MSP430 系列单片机是一个 16 位的单片机，采用了精简指令集（RISC）结构，具有丰富的寻址方式（7 种源操作数寻址、4 种目的操作数寻址）、简洁的 27 条内核指令以及大量的模拟指令；大量的寄存器以及片内数据存储器都可参加多种运算；还有高效的查表处理指令。这些特点保证了可编制高效率的源程序。</p><p><strong>HC-06蓝牙模块</strong><span>	</span>蓝牙模块是指集成蓝牙功能的芯片基本电路集合，用于无线网络通讯。</p><p>先对各个针脚做初始化赋值，然后确定需要实现的函数，通过 HC-06 确定接收发送的串口信号，用模拟信号和数字信号两种赋值给管脚，实现电机转动，通过串口测试软件检测。</p><p>在本次工科创实验中的小车控制方面，我们用 M, S, A, P 分别控制小车的右转，左转，前进和停止。并且经过调整调试确定左右轮的合理转速。</p><h3><a name='header-n193' class='md-header-anchor '></a>软件部分</h3><p>本组的计算机软件全部使用 Python 编写。我们充分利用了 Python 模块化和面向对象的功能，将系统的功能拆分成若干模块；在各个模块中，再将具有关联性的数据和函数封装成类。这样大大增强了代码的可读性和可维护性。</p><p><code>geometry</code> 模块中包括了对于几何点和线段的抽象，以及距离计算的函数。对于线段类 <code>Line</code> 而言，其构造函数接受两个端点，可以计算其所在的直线参数 <span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.323ex" height="2.577ex" viewBox="0 -806.1 1430.7 1109.7" role="img" focusable="false" style="vertical-align: -0.705ex;"><defs><path stroke-width="0" id="E2-MJMATHI-3B8" d="M35 200Q35 302 74 415T180 610T319 704Q320 704 327 704T339 705Q393 701 423 656Q462 596 462 495Q462 380 417 261T302 66T168 -10H161Q125 -10 99 10T60 63T41 130T35 200ZM383 566Q383 668 330 668Q294 668 260 623T204 521T170 421T157 371Q206 370 254 370L351 371Q352 372 359 404T375 484T383 566ZM113 132Q113 26 166 26Q181 26 198 36T239 74T287 161T335 307L340 324H145Q145 321 136 286T120 208T113 132Z"></path><path stroke-width="0" id="E2-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path><path stroke-width="0" id="E2-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E2-MJMATHI-3B8" x="0" y="0"></use><use xlink:href="#E2-MJMAIN-2C" x="469" y="0"></use><use xlink:href="#E2-MJMATHI-3C1" x="913" y="0"></use></g></svg></span><script type="math/tex">\theta,\rho</script> 和线段端点参数 <span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.817ex" height="2.227ex" viewBox="0 -705.6 2073.8 958.9" role="img" focusable="false" style="vertical-align: -0.588ex;"><defs><path stroke-width="0" id="E3-MJMATHI-74" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path><path stroke-width="0" id="E3-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path stroke-width="0" id="E3-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path><path stroke-width="0" id="E3-MJMAIN-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E3-MJMATHI-74" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E3-MJMAIN-31" x="510" y="-213"></use><use xlink:href="#E3-MJMAIN-2C" x="814" y="0"></use><g transform="translate(1259,0)"><use xlink:href="#E3-MJMATHI-74" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E3-MJMAIN-32" x="510" y="-213"></use></g></g></svg></span><script type="math/tex">t_1, t_2</script>；<code>isColinear</code> 可以判断两个线段所在直线是否近似共线；通过 <code>merge</code> 将两个近似共线且有重合的线段归并；<code>otherEndpoint</code> 可以获得一个线段除给定端点外的另一个端点。</p><p><code>route</code> 模块中包括了所有的图像处理程序。其包含一个 <code>RouteMap</code> 类，在构造函数中初始化视频来源。<code>capture</code> 方法主要获取新一帧的摄像头图像，探测跑道的角点，得到透视变换矩阵，对原始图像进行变换，储存变换后的跑道图像。如果是首次运行，还会弹出窗口便于摄像头和跑道位置的校准。<code>findRoute</code> 方法主要是用于抽象出路径的关键点。它首先用户给定的参数对跑道图像进行二值化和形态学变换（腐蚀+闭运算），然后使用霍夫线变换得到初始线段，并这些线段进行归并以获取主干路线。最后从图像的左上角开始，沿着已找到的线段依次搜索端点，依次加入到端点列表中，这样就得到了整个路线。<code>updateCar</code> 根据小车的头尾标记从图像中获取其位置和方向。</p><p><code>control</code> 模块包括了控制器类 <code>Controller</code>。其构造函数接受一个 <code>RouteMap</code> 类型的路线图对象和 <code>Serial</code> 类型的串口对象。在 <code>run</code> 方法中，先调用 <code>RouteMap</code> 的 <code>capture</code> 方法进行校准并捕获初始图像，再调用 <code>findRoute</code> 获取路径点列表。在接下来的循环中，每次调用 <code>capture</code> 捕获新的图像，调用 <code>updateCar</code> 获取小车的位置和方向，计算小车当前方向的和目标方向的夹角，如果超出了阈值范围则转向，否则直行。当到达目标点时，从列表中取出下一个点，反复执行直到到达了最后一个点。</p><p>下面是软件的若干截图：</p><ul><li>调整摄像头及跑道</li></ul><p><img src='image/screen_corner.png' alt='' referrerPolicy='no-referrer' /></p><ul><li>提取跑道路径点</li></ul><p><img src='image/screen_route.png' alt='' referrerPolicy='no-referrer' /></p><ul><li>控制小车运行</li></ul><p><img src='image/screen_control.png' alt='' referrerPolicy='no-referrer' /></p><p>&nbsp;</p><h2><a name='header-n212' class='md-header-anchor '></a>运行结果</h2><h3><a name='header-n213' class='md-header-anchor '></a>演示</h3><p>若视频无法播放，可在右键菜单中勾选“显示控件”即可出现播放键及进度条。</p><video src="video/demo.mp4" onerror="this.style.display = 'none';"></video><h3><a name='header-n215' class='md-header-anchor '></a>测试情况</h3><figure><table><thead><tr><th>项目</th><th>情况</th></tr></thead><tbody><tr><td>小车运行平滑流畅程度</td><td>流畅</td></tr><tr><td>程序运行中，能否平移或旋转跑道</td><td>是</td></tr><tr><td>是否支持随机更换起点终点</td><td>否</td></tr><tr><td>是否一键启动且根据环境光强自动设置参数</td><td>否</td></tr><tr><td>跑道复杂度</td><td>6 个弯</td></tr><tr><td>图像处理语言</td><td>Python</td></tr><tr><td>是否自备小车</td><td>否</td></tr><tr><td>小组自评</td><td>2 级</td></tr></tbody></table></figure><p>&nbsp;</p><h2><a name='header-n245' class='md-header-anchor '></a>总结</h2><h3><a name='header-n246' class='md-header-anchor '></a>优点与不足</h3><p>本项目具有下列优点：</p><ul><li>系统运行稳定、流畅，小车能顺利地沿路径移动；</li><li>软件结构设计合理，代码可读性强，易于维护；</li><li>系统的可视化程度高，便于监控运行状况。</li></ul><p>本项目尚具有下列不足：</p><ul><li>受硬件条件限制，小车的行动不是十分灵活；</li><li>受寻路算法限制，无法做到随机更换起点终点；</li><li>无法根据环境光自动设置参数。</li></ul><h3><a name='header-n263' class='md-header-anchor '></a>个人感受</h3><blockquote><p>我在本项目中主要负责了软件部分的工作，特别是图像处理这方面。程序的基本框架我很早就完成了，但是后续为了让软件具有更好的健壮性和稳定性，花了相当多时间。由于我起初是用三维软件渲染的虚拟场景做测试的，做了很多理想化的假定，结果实际测试的时候出了很多问题。之后我反复思考每一个可能出现的异常情况，比如光照变化使原先设定的阈值失效、探测不到跑道角点、提取跑道时出现多余线段等问题，不断改进程序，才有了最后的成果。这学期的项目让我对数字图像处理产生了浓厚的兴趣，我会在后续的专业课程中深入地学习这方面的知识。此次我还担任本组的组长，这个为我进一步提高组织、决策能力，并增进和班级同学的交流提供了机会。</p><p>——王梓涵</p></blockquote><blockquote><p>通过这次工科创，了解并学习关于 OpenCV 的部分相关知识，掌握了单片机的代码编写。对于一个工程项目的进行有了进一步的认识，并且对于如何进行团队合作，进度安排，调整调试有了更深的感受。虽然只是工科创 II-B，但在过程中还是遇到了不少问题。希望在 III-C 中继续学习，不断进步。</p><p>——李岩松</p></blockquote><blockquote><p>本次工科创2B实践中，我负责的是小车控制的单片机编程部分。小车控制的实现逻辑比较简单，但是硬件本身存在的问题常常是偶然不可知，出现了电机不平衡，阻矩大，前后轮抓地力弱，甚至电机导线脱落等问题，比较繁琐反复，在调试硬件的过程中，要非常感谢队友们，为改善硬件提供了很多帮助。此外，图像处理，路线生成，串口控制，调试时的参数调整等，负责的同学也都为我们进行了详细的讲解，让我们对整个项目框架和实现逻辑有比较清晰的了解，也学习了 OpenCV 的相关知识。可以说，本次实践让我感受最深的是团队合作的魅力，队友们、老师、助教的帮助，为我们项目的成功提供了强劲的助力。此外，繁琐的参数和硬件调试也锻炼了我们冷静思考的能力。</p><p>——杜蔻年华</p></blockquote><p>&nbsp;</p><h2><a name='header-n272' class='md-header-anchor '></a>附录</h2><h3><a name='header-n273' class='md-header-anchor '></a>系统使用说明</h3><ol start='' ><li>确保计算机上安装了 Python 3.x 版本解释器，并安装了 <code>numpy</code>、<code>opencv-python</code> 以及 <code>pyserial</code> 三个包。</li><li>打开小车电源，将计算机和小车通过蓝牙连接。</li><li>运行 <code>control.py</code>（可通过命令行 <code>python control.py</code> 或 IDE 内的启动按钮执行）程序会对小车先发出一段测试指令。（具体为：停止-前进-左转-前进-右转-前进-停止）</li><li>屏幕上出现两个图像窗口。将小车放在跑道的任意不遮挡跑道的位置，调整摄像头和跑道位置，使得跑道完全出现在 Corners （角点）窗口内。调整 Mark Mask （标记遮罩）窗口中的 Saturation（饱和度）和 Value（亮度）滑块，使得角点圆形标记的二值化图像清晰可见，且左侧图像中且四个角点处各出现一个红色点。确定后按回车键。</li><li>屏幕上出现两个图像窗口。调整 Route Morphology（路线形态学）窗口中的 Saturation（饱和度）、Value（亮度）、Close（闭运算）和 Erosion（腐蚀）滑块，使得路线的二值化图像清晰、完整（小车的阴影可能也会出现，不过影响不大），且 Key Positions（关键位置）窗口中显示的关键点符合预期。确定后按回车键。</li><li>小车开始运动，屏幕上出现两个图像窗口。Car Position（小车位置）窗口内用黑点标记出小车的首尾标记位置，用绿色线段标记小车位置和目标位置的连线（线段两端有绿点），用蓝点标记剩余的路径点位置。如果要在运行时调整摄像头或跑道位置，注意 Corners（角点）窗口中是否四个角点都能辨认，否则系统会暂停运行。</li><li>小车走完跑道会停止，程序会自动退出。</li></ol><h3><a name='header-n289' class='md-header-anchor '></a>源代码</h3><p>所有源代码均放在 <a href='source'><code>source</code></a> 目录内。</p><p>计算机端软件源码见 <a href='source/geometry.py'><code>geometry.py</code></a>、<a href='source/route.py'><code>route.py</code></a>、<a href='source/control.py'><code>control.py</code></a> 三个文件，单片机端代码见 <a href='source/oncar.ino'><code>oncar.ino</code></a>，必要之处已给出注释。</p><h3><a name='header-n292' class='md-header-anchor '></a>系统电路图</h3><p><img src='image/circuit.jpg' alt='' referrerPolicy='no-referrer' /></p><h3><a name='header-n294' class='md-header-anchor '></a>参考资料</h3><ol start='' ><li><a href='https://docs.opencv.org/4.1.0/d6/d00/tutorial_py_root.html'>OpenCV-Python Tutorials</a></li><li>工程实践与科技创新 2-B 指导书</li></ol></div>
+</body>
+</html>

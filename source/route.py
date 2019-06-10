@@ -9,7 +9,7 @@ CAMERA_ID = 1
 # The resolution of map after perspective transformation
 MAP_SIZE = (640, 480)
 # The center of starting-point searching circle
-ROUTE_BEGIN_POSITION = (0, 0)
+ROUTE_BEGIN_POSITION = (MAP_SIZE[0], 0)
 
 # Minimum size for contour detection
 MIN_CONTOUR_LENGTH = 20
@@ -132,7 +132,7 @@ class RouteMap:
 
     def _read(self):
         if TEST_WITH_IMAGE:
-            self.original = cv2.imread("img/rotate.jpg")
+            self.original = cv2.imread("image/capture.jpg")
         else:
             _, self.original = self.video.read()
 

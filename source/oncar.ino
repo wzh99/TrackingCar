@@ -56,29 +56,11 @@ if (Serial.available() > 0) {
 operation = Serial.read();
  switch(operation)
     {
-      case 'L':
-        turnLeft1();
-        break;
       case 'M':
-        turnLeft2();
-        break;
-      case 'N':
-        turnLeft3();
-        break;
-      case 'O':
-        turnLeft4();
-        break;
-      case 'R':
-        turnRight1();
+        turnLeft();
         break;
       case 'S':
-        turnRight2();
-        break;
-      case 'T':
-        turnRight3();
-        break;
-      case 'U':
-        turnRight4();
+        turnRight();
         break;
       case 'A':
         goAhead();
@@ -112,61 +94,19 @@ analogWrite(LEFT_AHEAD,RUN0);
 analogWrite(RIGHT_AHEAD,RUN0);
 steer(1.0);
 }
-void turnLeft1(){             //左转1，小角度
-digitalWrite(LEFT_BACK, LOW);
-digitalWrite(RIGHT_BACK, LOW);
-analogWrite(RIGHT_AHEAD,RUN00);
-analogWrite(LEFT_AHEAD,RUN0);
-steer(1.1);
-}
-void turnLeft2(){              //左转2，大角度
+
+void turnLeft(){              //左转2，大角度
 digitalWrite(LEFT_AHEAD,LOW);
 digitalWrite(RIGHT_BACK,LOW);
 analogWrite(RIGHT_AHEAD,RUN1);
 analogWrite(LEFT_BACK,TURN1);
 steer(1.1);
 }
-void turnLeft3(){              //左转3，超大角度
-digitalWrite(LEFT_AHEAD,LOW);
-digitalWrite(RIGHT_BACK,LOW);
-analogWrite(RIGHT_AHEAD,RUN2);
-analogWrite(LEFT_BACK,TURN2);
-steer(1.1);
-}
-void turnLeft4(){            //左转3，超超大角度
-digitalWrite(LEFT_AHEAD,LOW);
-digitalWrite(RIGHT_BACK,LOW);
-analogWrite(RIGHT_AHEAD,RUN3);
-analogWrite(LEFT_BACK,TURN3);
-steer(1.1);
-}
-
-void turnRight1(){              //右转1，小角度
-digitalWrite(LEFT_BACK, LOW);
-digitalWrite(RIGHT_BACK, LOW);
-analogWrite(LEFT_AHEAD,RUN00);
-analogWrite(RIGHT_AHEAD,RUN0);
-steer(1.1);
-}
-void turnRight2(){             //右转2，大角度
+void turnRight(){             //右转2，大角度
 digitalWrite(LEFT_BACK,LOW);
 digitalWrite(RIGHT_AHEAD,LOW);
 analogWrite(LEFT_AHEAD,RUN1);
 analogWrite(RIGHT_BACK,TURN1);
-steer(1.1);
-}
-void turnRight3(){             //右转3，超大角度
-digitalWrite(LEFT_BACK,LOW);
-digitalWrite(RIGHT_AHEAD,LOW);
-analogWrite(LEFT_AHEAD,RUN2);
-analogWrite(RIGHT_BACK,TURN2);
-steer(1.1);
-}
-void turnRight4(){            //右转4，超超大角度
-digitalWrite(LEFT_BACK,LOW);
-digitalWrite(RIGHT_AHEAD,LOW);
-analogWrite(LEFT_AHEAD,RUN3);
-analogWrite(RIGHT_BACK,TURN3);
 steer(1.1);
 }
 void park(){                   //停下
