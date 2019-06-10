@@ -18,7 +18,7 @@ ROUTE_SAT_RANGE = [0, 100]
 ROUTE_VALUE_RANGE = [0, 120]
 # The kernel size of morphology effect to routes
 CLOSE_KERNEL_SIZE = 25
-EROSION_KERNEL_SIZE = 15
+EROSION_KERNEL_SIZE = 3
 # Channel threshold for marks
 RED_HUE_RANGE = [0, 20]
 GREEN_HUE_RANGE = [40, 80]
@@ -32,7 +32,7 @@ SEARCH_RANGE = 300
 CLOSEST_MIN_DIST = 50
 
 # Use test image or video capture
-TEST_WITH_IMAGE = True
+TEST_WITH_IMAGE = False
 # Decide whether to show certain images
 SHOW_TRANSFORMED = False
 SHOW_DETECTED_LINES = False
@@ -140,25 +140,25 @@ class RouteMap:
         # Create track bar for adjusting parameters of morphology transformation
         cv2.namedWindow("Route Morphology")
         cv2.namedWindow("Key Positions")
-        keyPts = self._findRoute()
+        self.keyPts = self._findRoute()
 
         def onChangeSat(x):
             ROUTE_SAT_RANGE[1] = x
-            keyPts = self._findRoute()
+            self.keyPts = self._findRoute()
         cv2.createTrackbar("Saturation", "Route Morphology", ROUTE_SAT_RANGE[1], 255, onChangeSat)
         def onChangeValue(x):
             ROUTE_VALUE_RANGE[1] = x
-            keyPts = self._findRoute()
+            self.keyPts = self._findRoute()
         cv2.createTrackbar("Value", "Route Morphology", ROUTE_VALUE_RANGE[1], 255, onChangeValue)
         def onChangeClose(x):
             global CLOSE_KERNEL_SIZE
             CLOSE_KERNEL_SIZE = x
-            keyPts = self._findRoute()
+            self.keyPts = self._findRoute()
         cv2.createTrackbar("Close", "Route Morphology", CLOSE_KERNEL_SIZE, 50, onChangeClose)
         def onChangeErosion(x):
             global EROSION_KERNEL_SIZE
             EROSION_KERNEL_SIZE = x
-            keyPts = self._findRoute()
+            self.keyPts = self._findRoute()
         cv2.createTrackbar("Erosion", "Route Morphology", EROSION_KERNEL_SIZE, 50, onChangeErosion)
 
         while True:
@@ -166,7 +166,7 @@ class RouteMap:
                 break
         cv2.destroyAllWindows()
 
-        return keyPts
+        return self.keyPts
 
     def _findRoute(self) -> np.ndarray:
         # Create road mask
@@ -282,13 +282,14 @@ class RouteMap:
         self.carPlot = cp.copy(self.map)
         cv2.circle(self.carPlot, headPos, 5, (0, 0, 0), thickness=-1)
         cv2.circle(self.carPlot, tailPos, 5, (0, 0, 0), thickness=-1)
+        cv2.line(self.carPlot, headPos, tailPos, (0, 0, 0), thickness=2, lineType=cv2.LINE_AA)
         # cv2.imshow("Car Position", plot)
 
         # Compute location and direction
-        location = ((headPos[0] + tailPos[0])/2, (headPos[1] + tailPos[1] / 2))
-        direction = (headPos[0] - tailPos[0], headPos[1] - tailPos[1])
+        location = (np.array(headPos) + np.array(tailPos)) / 2
+        direction = np.array(headPos) - np.array(tailPos)
         theta = np.arctan2(direction[1], direction[0])
-        return np.array(location), theta
+        return location, theta
         
 
 def findMaskCenter(mask) -> tuple:

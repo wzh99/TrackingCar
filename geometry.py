@@ -67,6 +67,4 @@ class Line:
 def dist(pt1, pt2) -> float:
     return np.linalg.norm(np.array(pt1) - np.array(pt2))
 
-def isNear(pt1, pt2) -> bool:
-	return dist(pt1, pt2) < DIST_THRESH
     
