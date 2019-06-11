@@ -74,9 +74,7 @@
 
 ### 演示
 
-若视频无法播放，可在右键菜单中勾选“显示控件”即可出现播放键及进度条。
-
-<video src='video/demo.mp4'></video>
+<video src='video/demo.mp4' controls=‘controls’></video>
 
 ### 测试情况
 
